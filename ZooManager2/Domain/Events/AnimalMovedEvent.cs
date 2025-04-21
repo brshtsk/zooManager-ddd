@@ -13,4 +13,9 @@ public class AnimalMovedEvent
         EventAnimal = eventAnimal;
         NewEnclosure = newEnclosure;
     }
+    
+    public override string ToString()
+    {
+        return $"Животное {EventAnimal.Name} перемещено в вольер {NewEnclosure.Id} ({NewEnclosure.Type})";
+    }
 }

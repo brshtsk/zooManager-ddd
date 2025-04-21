@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Domain.ValueObjects;
 using Infrastructure;
 
@@ -8,9 +9,9 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class EnclosuresController : ControllerBase
 {
-    private readonly InMemoryEnclosureRepository _enclosureRepository;
+    private readonly IEnclosureRepository _enclosureRepository;
 
-    public EnclosuresController(InMemoryEnclosureRepository enclosureRepository)
+    public EnclosuresController(IEnclosureRepository enclosureRepository)
     {
         _enclosureRepository = enclosureRepository;
     }

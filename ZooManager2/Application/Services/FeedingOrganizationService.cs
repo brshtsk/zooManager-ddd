@@ -1,19 +1,17 @@
 ﻿using Domain.Interfaces;
 using Domain.Entities;
-using Application.Interfaces;
 using Domain.Events;
+using Application.Interfaces;
 
 namespace Application.Services;
 
-public class FeedingOrganizationService
+public class FeedingOrganizationService: IFeedingOrganizationService
 {
     private readonly IFeedingScheduleRepository _schedules;
-    private readonly IEventDispatcher _dispatcher;
 
-    public FeedingOrganizationService(IFeedingScheduleRepository schedules, IEventDispatcher dispatcher)
+    public FeedingOrganizationService(IFeedingScheduleRepository schedules)
     {
         _schedules = schedules;
-        _dispatcher = dispatcher;
     }
 
     public void ScheduleFeeding(FeedingSchedule schedule)
@@ -30,7 +28,7 @@ public class FeedingOrganizationService
 
         _schedules.Remove(id);
     }
-    
+
     public void UpdateSchedule(Guid id, FeedingSchedule updatedSchedule)
     {
         var schedule = _schedules.GetById(id);
@@ -39,13 +37,14 @@ public class FeedingOrganizationService
         schedule.Update(updatedSchedule);
         _schedules.Add(schedule);
     }
-    
+
     public void ExecuteScheduledFeeding(Guid id)
     {
         var schedule = _schedules.GetById(id);
         if (schedule == null) return;
 
         schedule.Execute();
-        _dispatcher.Dispatch(new FeedingTimeEvent(schedule.AnimalToFeed, schedule.Time));
+        var ev = new FeedingTimeEvent(schedule.AnimalToFeed, schedule.Time);
+        Console.WriteLine(ev);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Application.Services;
+using Application.Interfaces;
+using Domain.Interfaces;
 using Infrastructure;
 using Presentation.Models;
 
@@ -9,10 +11,10 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class AnimalsController : ControllerBase
 {
-    private readonly AnimalTransferService _animalTransferService;
-    private readonly InMemoryAnimalRepository _inMemoryAnimalRepository;
+    private readonly IAnimalTransferService _animalTransferService;
+    private readonly IAnimalRepository _inMemoryAnimalRepository;
 
-    public AnimalsController(AnimalTransferService animalTransferService, InMemoryAnimalRepository inMemoryAnimalRepository)
+    public AnimalsController(IAnimalTransferService animalTransferService, IAnimalRepository inMemoryAnimalRepository)
     {
         _animalTransferService = animalTransferService;
         _inMemoryAnimalRepository = inMemoryAnimalRepository;

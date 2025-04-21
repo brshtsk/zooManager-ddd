@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Application.Services;
+using Application.Interfaces;
 
 namespace Presentation.Controllers;
 
@@ -7,9 +8,9 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class ZooStatsController : ControllerBase
 {
-    private readonly ZooStatisticsService _statisticsService;
+    private readonly IZooStatisticsService _statisticsService;
 
-    public ZooStatsController(ZooStatisticsService statisticsService)
+    public ZooStatsController(IZooStatisticsService statisticsService)
     {
         _statisticsService = statisticsService;
     }

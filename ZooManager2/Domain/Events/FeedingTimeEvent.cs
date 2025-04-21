@@ -13,4 +13,9 @@ public class FeedingTimeEvent
         EventAnimal = eventAnimal;
         Time = time;
     }
+    
+    public override string ToString()
+    {
+        return $"Покормили животное {EventAnimal.Name} в {Time}";
+    }
 }

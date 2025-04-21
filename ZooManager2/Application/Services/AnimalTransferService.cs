@@ -4,17 +4,15 @@ using Application.Interfaces;
 
 namespace Application.Services;
 
-public class AnimalTransferService
+public class AnimalTransferService: IAnimalTransferService
 {
     private readonly IAnimalRepository _animals;
     private readonly IEnclosureRepository _enclosures;
-    private readonly IEventDispatcher _dispatcher;
 
-    public AnimalTransferService(IAnimalRepository animals, IEnclosureRepository enclosures, IEventDispatcher dispatcher)
+    public AnimalTransferService(IAnimalRepository animals, IEnclosureRepository enclosures)
     {
         _animals = animals;
         _enclosures = enclosures;
-        _dispatcher = dispatcher;
     }
 
     public void Move(Guid id, Guid newEnclosureId)
@@ -24,6 +22,7 @@ public class AnimalTransferService
         if (animal == null || newEnclosure == null) return;
 
         animal.MoveToEnclosure(newEnclosureId);
-        _dispatcher.Dispatch(new AnimalMovedEvent(animal, newEnclosure));
+        var ev = new AnimalMovedEvent(animal, newEnclosure);
+        Console.WriteLine(ev);
     }
 }

@@ -2,6 +2,7 @@
 using Domain.ValueObjects;
 using Infrastructure;
 using Domain.Entities;
+using Domain.Interfaces;
 
 namespace Presentation.Controllers;
 
@@ -9,12 +10,12 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class FeedingSchedulesController : ControllerBase
 {
-    private readonly InMemoryAnimalRepository _animalRepository;
-    private readonly InMemoryFeedingScheduleRepository _scheduleRepository;
+    private readonly IAnimalRepository _animalRepository;
+    private readonly IFeedingScheduleRepository _scheduleRepository;
 
     public FeedingSchedulesController(
-        InMemoryAnimalRepository animalRepository,
-        InMemoryFeedingScheduleRepository scheduleRepository)
+        IAnimalRepository animalRepository,
+        IFeedingScheduleRepository scheduleRepository)
     {
         _animalRepository = animalRepository;
         _scheduleRepository = scheduleRepository;

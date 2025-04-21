@@ -1,8 +1,9 @@
 ﻿using Domain.Interfaces;
+using Application.Interfaces;
 
 namespace Application.Services;
 
-public class ZooStatisticsService
+public class ZooStatisticsService: IZooStatisticsService
 {
     private readonly IAnimalRepository _animals;
     private readonly IEnclosureRepository _enclosures;

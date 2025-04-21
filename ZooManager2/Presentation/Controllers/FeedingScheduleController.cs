@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Application.Services;
+using Application.Interfaces;
 using Domain.Entities;
 
 namespace Presentation.Controllers;
@@ -8,9 +9,9 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class FeedingScheduleController : ControllerBase
 {
-    private readonly FeedingOrganizationService _feedingService;
+    private readonly IFeedingOrganizationService _feedingService;
 
-    public FeedingScheduleController(FeedingOrganizationService feedingService)
+    public FeedingScheduleController(IFeedingOrganizationService feedingService)
     {
         _feedingService = feedingService;
     }
