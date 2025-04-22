@@ -14,6 +14,8 @@ public class Enclosure
 
     public Enclosure(Guid id, EnclosureType type, int capacity, bool isClean)
     {
+        if (capacity <= 0)
+            throw new ArgumentOutOfRangeException(nameof(capacity), "Вместимость должна быть больше нуля.");
         Id = id;
         Type = type;
         Capacity = capacity;
@@ -22,21 +24,21 @@ public class Enclosure
 
     public bool AddAnimal(Animal animal)
     {
-        if (_animalIds.Count >= Capacity) return false;
-        if (_animalIds.Contains(animal.Id)) return false;
+        if (_animalIds.Count >= Capacity) throw new Exception("В вольере недостаточно места для нового животного");
+        if (_animalIds.Contains(animal.Id)) throw new Exception("Это животное уже находится в вольере");
         switch (Type)
         {
             case EnclosureType.Herbivore:
-                if (animal.Type != AnimalType.Herbivore) return false;
+                if (animal.Type != AnimalType.Herbivore) throw new Exception("Неподходящий тип животного");
                 break;
             case EnclosureType.Predator:
-                if (animal.Type != AnimalType.Predator) return false;
+                if (animal.Type != AnimalType.Predator) throw new Exception("Неподходящий тип животного");
                 break;
             case EnclosureType.Bird:
-                if (animal.Type != AnimalType.Bird) return false;
+                if (animal.Type != AnimalType.Bird) throw new Exception("Неподходящий тип животного");
                 break;
             case EnclosureType.Aquarium:
-                if (animal.Type != AnimalType.Fish) return false;
+                if (animal.Type != AnimalType.Fish) throw new Exception("Неподходящий тип животного");
                 break;
         }
 

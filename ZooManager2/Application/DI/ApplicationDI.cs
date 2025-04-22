@@ -1,4 +1,6 @@
-﻿// using Microsoft.Extensions.DependencyInjection;
+﻿// Вся DI логика описана в Infrastructure при сборке API.
+
+// using Microsoft.Extensions.DependencyInjection;
 // using Application.Services;
 // using Application.Interfaces;
 //

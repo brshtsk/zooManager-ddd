@@ -10,11 +10,12 @@ public class InMemoryEnclosureRepository : IEnclosureRepository
 
     public void Add(Enclosure enclosure) => _enclosures.Add(enclosure);
     
-    public void ConstructAndAdd(EnclosureType type, int capacity, bool isClean)
+    public Guid ConstructAndAdd(EnclosureType type, int capacity, bool isClean)
     {
         Guid id = Guid.NewGuid();
         var enclosure = new Enclosure(id, type, capacity, isClean);
         _enclosures.Add(enclosure);
+        return id;
     }
 
     public void Remove(Guid id)

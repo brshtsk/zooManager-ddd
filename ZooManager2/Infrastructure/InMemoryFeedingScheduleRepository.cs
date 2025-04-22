@@ -10,11 +10,12 @@ public class InMemoryFeedingScheduleRepository : IFeedingScheduleRepository
 
     public void Add(FeedingSchedule schedule) => _schedules.Add(schedule);
     
-    public void ConstructAndAssign(Animal animalToFeed, FeedingTime time, AnimalFood availableFood)
+    public Guid ConstructAndAssign(Animal animalToFeed, FeedingTime time, AnimalFood availableFood)
     {
         Guid id = Guid.NewGuid();
         var schedule = new FeedingSchedule(id, animalToFeed, time, availableFood);
         _schedules.Add(schedule);
+        return id;
     }
 
     public void Remove(Guid id)

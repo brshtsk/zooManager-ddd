@@ -18,7 +18,14 @@ public class ZooStatsController : ControllerBase
     [HttpGet]
     public IActionResult GetZooStats()
     {
-        var stats = _statisticsService.GetStatistics();
-        return Ok(stats);
+        try
+        {
+            var stats = _statisticsService.GetStatistics();
+            return Ok(stats);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

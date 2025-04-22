@@ -35,7 +35,7 @@ public class Animal
             throw new InvalidOperationException("Животное может есть только свою любимую еду.");
         
         if (food.Quantity < FavouriteFood.Quantity)
-            throw new InvalidOperationException("Insufficient food quantity.");
+            throw new InvalidOperationException("Недостаточно еды для кормления животного.");
         
         food.SplitPortion(FavouriteFood.Quantity); // Забираем порцию еды из текущего запаса
     }

@@ -11,13 +11,14 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class AnimalsController : ControllerBase
 {
-    private readonly IAnimalTransferService _animalTransferService;
     private readonly IAnimalRepository _inMemoryAnimalRepository;
+    private readonly IEnclosureRepository _inMemoryEnclosureRepository;
 
-    public AnimalsController(IAnimalTransferService animalTransferService, IAnimalRepository inMemoryAnimalRepository)
+    public AnimalsController(IAnimalRepository inMemoryAnimalRepository,
+        IEnclosureRepository inMemoryEnclosureRepository)
     {
-        _animalTransferService = animalTransferService;
         _inMemoryAnimalRepository = inMemoryAnimalRepository;
+        _inMemoryEnclosureRepository = inMemoryEnclosureRepository;
     }
 
     [HttpPost]
@@ -25,7 +26,7 @@ public class AnimalsController : ControllerBase
     {
         try
         {
-            _inMemoryAnimalRepository.ConstructAndAdd(
+            var id = _inMemoryAnimalRepository.ConstructAndAdd(
                 request.Name,
                 request.BirthDate,
                 request.AnimalType,
@@ -36,7 +37,21 @@ public class AnimalsController : ControllerBase
                 request.EnclosureId
             );
 
-            return Ok("Animal added.");
+            try
+            {
+                var enclosure = _inMemoryEnclosureRepository.GetById(request.EnclosureId);
+                if (enclosure == null)
+                    return NotFound($"Вольер с ID {request.EnclosureId} не найден.");
+                var animal = _inMemoryAnimalRepository.GetById(id);
+                enclosure.AddAnimal(animal);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(
+                    $"Животное не получится принять в зоопарк, проверьте его данные! Ошибка при добавлении животного в вольер: {e.Message}");
+            }
+
+            return Ok($"Животное добавлено. ID: {id}");
         }
         catch (Exception ex)
         {
@@ -47,14 +62,17 @@ public class AnimalsController : ControllerBase
     [HttpDelete("{animalId}")]
     public IActionResult DeleteAnimal(Guid animalId)
     {
-        _inMemoryAnimalRepository.Remove(animalId);
-        return Ok($"Animal {animalId} deleted.");
-    }
-
-    [HttpPost("{animalId}/move/{enclosureId}")]
-    public IActionResult MoveAnimal(Guid animalId, Guid enclosureId)
-    {
-        _animalTransferService.Move(animalId, enclosureId);
-        return Ok();
+        try
+        {
+            var animal = _inMemoryAnimalRepository.GetById(animalId);
+            var enclosure = _inMemoryEnclosureRepository.GetById(animal.EnclosureId);
+            _inMemoryAnimalRepository.Remove(animalId);
+            enclosure.RemoveAnimal(animalId);
+            return Ok($"Animal {animalId} deleted.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

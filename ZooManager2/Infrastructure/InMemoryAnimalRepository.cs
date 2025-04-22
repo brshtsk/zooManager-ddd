@@ -10,7 +10,7 @@ public class InMemoryAnimalRepository : IAnimalRepository
 
     public void Add(Animal animal) => _animals.Add(animal);
 
-    public void ConstructAndAdd(string name, DateTime birthDate, string animalTypeString, string genderString,
+    public Guid ConstructAndAdd(string name, DateTime birthDate, string animalTypeString, string genderString,
         string favouriteFoodName, int favouriteFoodQuantity, bool isHealthy, Guid enclosureId)
     {
         Guid id = Guid.NewGuid();
@@ -24,6 +24,7 @@ public class InMemoryAnimalRepository : IAnimalRepository
         var birthDateOnly = DateOnly.FromDateTime(birthDate);
         var animal = new Animal(id, name, birthDateOnly, type, gender, favouriteFood, isHealthy, enclosureId);
         _animals.Add(animal);
+        return id;
     }
 
     public void Remove(Guid id)

@@ -9,5 +9,5 @@ public interface IEnclosureRepository
     void Add(Enclosure enclosure);
     void Remove(Guid id);
     IEnumerable<Enclosure> GetAll();
-    void ConstructAndAdd(EnclosureType type, int capacity, bool isClean);
+    Guid ConstructAndAdd(EnclosureType type, int capacity, bool isClean);
 }

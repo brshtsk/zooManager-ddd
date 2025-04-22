@@ -19,7 +19,15 @@ public class AnimalTransferController : ControllerBase
     [HttpPost]
     public IActionResult MoveAnimal([FromQuery] Guid animalId, [FromQuery] Guid newEnclosureId)
     {
-        _transferService.Move(animalId, newEnclosureId);
+        try
+        {
+            _transferService.Move(animalId, newEnclosureId);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
         return Ok($"Животное {animalId} переведено в вольер {newEnclosureId}");
     }
 }

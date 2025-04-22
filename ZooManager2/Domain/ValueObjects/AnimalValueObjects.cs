@@ -21,6 +21,8 @@ public struct AnimalFood
 
     public AnimalFood(string foodName, int quantity)
     {
+        if (quantity <= 0)
+            throw new ArgumentOutOfRangeException(nameof(quantity), "Количество еды должно быть больше 0.");
         Name = foodName;
         Quantity = quantity;
     }
@@ -38,9 +40,12 @@ public struct AnimalFood
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public AnimalFood SplitPortion(int portionSize)
     {
-        if (portionSize <= 0 || portionSize > Quantity)
+        if (portionSize <= 0)
             throw new ArgumentOutOfRangeException(nameof(portionSize),
-                "Portion size must be positive and less than or equal to the quantity.");
+                "Невалидный размер порции.");
+        if (portionSize > Quantity)
+            throw new ArgumentOutOfRangeException(nameof(portionSize),
+                "Размер порции больше доступного количества еды.");
 
         Quantity -= portionSize;
         return new AnimalFood(Name, portionSize);

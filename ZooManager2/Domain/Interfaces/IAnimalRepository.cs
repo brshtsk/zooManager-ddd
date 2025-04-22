@@ -9,6 +9,6 @@ public interface IAnimalRepository
     void Remove(Guid id);
     IEnumerable<Animal> GetAll();
 
-    void ConstructAndAdd(string name, DateTime birthDate, string animalTypeString, string genderString,
+    Guid ConstructAndAdd(string name, DateTime birthDate, string animalTypeString, string genderString,
         string favouriteFoodName, int favouriteFoodQuantity, bool isHealthy, Guid enclosureId);
 }

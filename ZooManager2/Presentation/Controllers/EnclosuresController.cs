@@ -20,23 +20,47 @@ public class EnclosuresController : ControllerBase
     public IActionResult AddEnclosure([FromQuery] string type, [FromQuery] int capacity, [FromQuery] bool isClean)
     {
         if (!Enum.TryParse<EnclosureType>(type, out var typeEnum))
-            return BadRequest("Типы вольеров: Open, Cage, Aquarium, Aviary");
+            return BadRequest("Типы вольеров: Predator, Herbivore, Bird, Aquarium");
 
-        _enclosureRepository.ConstructAndAdd(typeEnum, capacity, isClean);
-        return Ok("Добавлен вольер.");
+        try
+        {
+            var id = _enclosureRepository.ConstructAndAdd(typeEnum, capacity, isClean);
+            return Ok($"Добавлен вольер. ID: {id}");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteEnclosure(Guid id)
     {
-        _enclosureRepository.Remove(id);
-        return Ok($"Вольер {id} удален.");
+        try
+        {
+            var enclosure = _enclosureRepository.GetById(id);
+            if (enclosure.Animals.Count > 0)
+                return BadRequest($"В вольере {id} есть животные. Переместите их перед удалением вольера.");
+            _enclosureRepository.Remove(id);
+            return Ok($"Вольер {id} удален.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        var enclosures = _enclosureRepository.GetAll();
-        return Ok(enclosures);
+        try
+        {
+            var enclosures = _enclosureRepository.GetAll();
+            return Ok(enclosures);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

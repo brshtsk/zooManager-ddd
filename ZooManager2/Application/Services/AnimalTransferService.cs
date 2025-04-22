@@ -19,7 +19,9 @@ public class AnimalTransferService: IAnimalTransferService
     {
         var animal = _animals.GetById(id);
         var newEnclosure = _enclosures.GetById(newEnclosureId);
-        if (animal == null || newEnclosure == null) return;
+        var oldEnclosure = _enclosures.GetById(animal.EnclosureId);
+        oldEnclosure.RemoveAnimal(animal.Id);
+        newEnclosure.AddAnimal(animal);
 
         animal.MoveToEnclosure(newEnclosureId);
         var ev = new AnimalMovedEvent(animal, newEnclosure);
