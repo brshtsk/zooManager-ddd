@@ -37,7 +37,7 @@
 
 **Clean Architecture:**
 
-- Проект разделён на 4 уровня: `Domain`, `Application`, `Presentation`, `API`
+- Проект разделён на 4 уровня: `Domain`, `Application`, `Infrastructure`, `Presentation`
 - Зависимости направлены внутрь
 - Логика приложения отделена от хранения данных и внешнего взаимодействия
 - Для каждого слоя есть свой csproj
